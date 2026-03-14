@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday My Love 🎂</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:linear-gradient(135deg,#ff758c,#ff7eb3);
+min-height:100vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+text-align:center;
+color:white;
+}
+
+section{
+padding:40px 20px;
+width:100%;
+max-width:500px;
+}
+
+h1{
+font-size:38px;
+}
+
+button{
+padding:12px 22px;
+font-size:16px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+background:white;
+color:#ff4d6d;
+font-weight:bold;
+margin-top:15px;
+}
+
+.hidden{
+display:none;
+}
+
+/* hearts game */
+
+.heart{
+position:absolute;
+font-size:28px;
+cursor:pointer;
+}
+
+/* balloons */
+
+.balloon{
+position:fixed;
+bottom:-100px;
+font-size:40px;
+animation:float 10s linear infinite;
+}
+
+@keyframes float{
+from{transform:translateY(0)}
+to{transform:translateY(-120vh)}
+}
+
+/* cake */
+
+.cake{
+position:relative;
+width:240px;
+height:150px;
+background:#ff6b81;
+border-radius:15px;
+box-shadow:0 6px 0 #d94b65;
+margin:20px auto;
+}
+
+.layer{
+position:absolute;
+bottom:0;
+width:240px;
+height:80px;
+background:#ff8fa3;
+border-radius:15px;
+}
+
+.candle{
+position:absolute;
+width:12px;
+height:40px;
+background:white;
+top:-40px;
+}
+
+.flame{
+position:absolute;
+width:14px;
+height:22px;
+background:orange;
+border-radius:50%;
+top:-20px;
+left:-1px;
+animation:flicker 0.4s infinite alternate;
+}
+
+@keyframes flicker{
+from{transform:scale(1)}
+to{transform:scale(1.3)}
+}
+
+.slice{
+position:absolute;
+width:100%;
+height:6px;
+background:white;
+top:75px;
+left:0;
+}
+
+.confetti{
+position:fixed;
+top:-10px;
+font-size:12px;
+animation:fall 3s linear infinite;
+}
+
+@keyframes fall{
+to{transform:translateY(110vh) rotate(360deg)}
+}
+
+.kiss{
+position:fixed;
+bottom:-40px;
+font-size:24px;
+animation:kissUp 4s linear infinite;
+}
+
+@keyframes kissUp{
+to{
+transform:translateY(-110vh);
+opacity:0;
+}
+}
+
+/* letter */
+
+#letter{
+background:white;
+color:#ff4d6d;
+padding:20px;
+border-radius:15px;
+margin-top:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<section id="gameSection">
+<h1>Catch My Love ❤️</h1>
+<p>Catch 5 hearts to unlock your birthday surprise</p>
+<h2 id="score">0 / 5</h2>
+</section>
+
+<section id="birthdaySection" class="hidden">
+
+<h1>Happy Birthday My Love 🎂❤️</h1>
+
+<div class="cake">
+
+<div class="layer"></div>
+
+<div class="candle" style="left:40px">
+<div class="flame"></div>
+</div>
+
+<div class="candle" style="left:110px">
+<div class="flame"></div>
+</div>
+
+<div class="candle" style="left:180px">
+<div class="flame"></div>
+</div>
+
+<div id="slice" class="hidden slice"></div>
+
+</div>
+
+<button onclick="blowCandles()">Blow Candles 💨</button>
+<button id="cutBtn" class="hidden" onclick="cutCake()">Cut Cake 🔪</button>
+<button id="letterBtn" class="hidden" onclick="openLetter()">Open Secret Letter 💌</button>
+
+<div id="letter" class="hidden">
+<h3>My Love ❤️</h3>
+<p>
+Happy Birthday to the most special person in my life.<br><br>
+I hope today fills your heart with happiness and beautiful moments.
+You deserve all the love, smiles and success in the world.<br><br>
+I'm sending you endless hugs and kisses today. 💋<br><br>
+Thank you for being you. I love you so much.
+</p>
+</div>
+
+</section>
+
+<script>
+
+let score=0
+
+function spawnHeart(){
+let heart=document.createElement("div")
+heart.className="heart"
+heart.innerHTML="❤️"
+heart.style.left=Math.random()*90+"vw"
+heart.style.top=Math.random()*70+"vh"
+
+heart.onclick=function(){
+score++
+document.getElementById("score").innerHTML=score+" / 5"
+heart.remove()
+
+if(score>=5){
+document.getElementById("birthdaySection").classList.remove("hidden")
+window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"})
+startBalloons()
+}
+}
+
+document.body.appendChild(heart)
+
+setTimeout(()=>heart.remove(),3000)
+}
+
+setInterval(spawnHeart,900)
+
+function startBalloons(){
+for(let i=0;i<20;i++){
+let b=document.createElement("div")
+b.className="balloon"
+b.innerHTML="🎈"
+b.style.left=Math.random()*100+"vw"
+b.style.animationDuration=6+Math.random()*6+"s"
+document.body.appendChild(b)
+}
+}
+
+function blowCandles(){
+document.querySelectorAll(".flame").forEach(f=>f.style.display="none")
+document.getElementById("cutBtn").classList.remove("hidden")
+}
+
+function cutCake(){
+document.getElementById("slice").classList.remove("hidden")
+startConfetti()
+startKisses()
+document.getElementById("letterBtn").classList.remove("hidden")
+}
+
+function openLetter(){
+document.getElementById("letter").classList.remove("hidden")
+}
+
+function startConfetti(){
+for(let i=0;i<80;i++){
+let conf=document.createElement("div")
+conf.className="confetti"
+conf.innerHTML="🎉"
+conf.style.left=Math.random()*100+"vw"
+conf.style.animationDelay=Math.random()*3+"s"
+document.body.appendChild(conf)
+}
+}
+
+function startKisses(){
+for(let i=0;i<30;i++){
+let kiss=document.createElement("div")
+kiss.className="kiss"
+kiss.innerHTML="💋"
+kiss.style.left=Math.random()*100+"vw"
+kiss.style.animationDelay=Math.random()*4+"s"
+document.body.appendChild(kiss)
+}
+}
+
+</script>
+
+</body>
+</html>
