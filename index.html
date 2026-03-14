@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+text-align:center;
+color:white;
+}
+
+.container{
+padding:20px;
+}
+
+button{
+padding:14px 28px;
+font-size:18px;
+border:none;
+border-radius:30px;
+background:white;
+color:#ff4d6d;
+cursor:pointer;
+margin-top:20px;
+}
+
+#gameArea{
+position:relative;
+height:60vh;
+overflow:hidden;
+}
+
+.heart{
+position:absolute;
+font-size:34px;
+cursor:pointer;
+}
+
+#message{
+margin-top:15px;
+font-size:18px;
+}
+
+#letter{
+max-width:600px;
+margin:auto;
+white-space:pre-line;
+line-height:1.6;
+font-size:18px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container" id="startScreen">
+
+<h1>Hey Love ❤️</h1>
+
+<p>I made a tiny game for you.</p>
+<p>I know you're not feeling well and I wanted to make you smile.</p>
+
+<p>Tap the hearts 💖</p>
+<p>Every heart is a kiss from me 😘</p>
+
+<button onclick="startGame()">Start Game</button>
+
+</div>
+
+
+<div class="container" id="gameScreen" style="display:none">
+
+<h2 id="score">Love Collected: 0</h2>
+
+<div id="gameArea"></div>
+
+<div id="message"></div>
+
+</div>
+
+
+<div class="container" id="endScreen" style="display:none">
+
+<h2>You caught all my love 💖</h2>
+
+<div id="letter"></div>
+
+<p style="margin-top:20px">Get well soon 🤍</p>
+
+<p>Kisses for you 😘😘😘</p>
+
+<button onclick="location.reload()">Play Again</button>
+
+</div>
+
+
+<script>
+
+let score=0;
+let maxScore=12;
+let gameRunning=false;
+
+const messages=[
+"I miss you ❤️",
+"You mean so much to me",
+"I'm really sorry I hurt you",
+"Please get well soon 🤍",
+"Your smile makes everything better",
+"This heart is for you 💖",
+"A kiss for you 😘",
+"You deserve so much love"
+];
+
+const apology=`Hey,
+
+I just wanted to say I'm really sorry if I hurt you.
+
+You always say that all you need from me is love,
+and I know sometimes I fail to show it properly.
+
+But that doesn't mean you don't matter to me.
+
+Right now you're sick and I wish I could
+just hug you and make you feel better.
+
+So this little game is just my way
+of sending you my love.
+
+I love you ❤️
+`;
+
+
+function startGame(){
+
+document.getElementById("startScreen").style.display="none";
+document.getElementById("gameScreen").style.display="block";
+
+gameRunning=true;
+
+spawnLoop();
+
+}
+
+
+function spawnLoop(){
+
+if(!gameRunning) return;
+
+spawnHeart();
+
+setTimeout(spawnLoop,900);
+
+}
+
+
+function spawnHeart(){
+
+const heart=document.createElement("div");
+
+heart.className="heart";
+heart.innerHTML="💖";
+
+const area=document.getElementById("gameArea");
+
+heart.style.left=Math.random()*(area.clientWidth-40)+"px";
+heart.style.top=Math.random()*(area.clientHeight-40)+"px";
+
+
+heart.onclick=function(){
+
+score++;
+
+document.getElementById("score").innerText="Love Collected: "+score;
+
+showMessage();
+
+heart.remove();
+
+if(score>=maxScore){
+endGame();
+}
+
+};
+
+area.appendChild(heart);
+
+setTimeout(()=>{
+heart.remove();
+},4000);
+
+}
+
+
+function showMessage(){
+
+let msg=messages[Math.floor(Math.random()*messages.length)];
+
+document.getElementById("message").innerText=msg;
+
+}
+
+
+function typeLetter(text,element){
+
+let i=0;
+
+function typing(){
+if(i<text.length){
+element.innerHTML+=text.charAt(i);
+i++;
+setTimeout(typing,35);
+}
+}
+
+typing();
+
+}
+
+
+function endGame(){
+
+gameRunning=false;
+
+document.getElementById("gameScreen").style.display="none";
+document.getElementById("endScreen").style.display="block";
+
+typeLetter(apology,document.getElementById("letter"));
+
+}
+
+</script>
+
+</body>
+</html>
